@@ -5,6 +5,7 @@ const cors = require('cors');
 let socketIo = require('socket.io');
 
 const nodemailer = require("nodemailer");
+const { info } = require("console");
 
 const PORT_NUMBER = process.env.PORT || 3000;
 
@@ -22,35 +23,18 @@ app
   .use(cors({origin: '*'}))
   .use((req, res, next) => {
     req.io = io;
-    next();
+    return next();
   })
-  .use('/api', require('./api'))
+  .use('/api', require('./routes/apitest'))
 
 server.listen(PORT_NUMBER, () => { console.log(`Server started on port ${PORT_NUMBER}`) })
-
-io.use((socket, next) => {
-  setTimeout(() => {
-    // next is called after the client disconnection
-    next();
-  }, 1000);
-
-  
-});
-
-io.use((socket, next) => {
-  next(new Error("thou shall not pass"));
-});
 
 io.on('connection', socket => {
   console.log('new user');
   socket.emit('msg', 'sockey')
   socket.on('contact_added', data => {
-    async function main() {
-      // Generate test SMTP service account from ethereal.email
-      // Only needed if you don't have a real mail account for testing
-      let testAccount = await nodemailer.createTestAccount();
+  async function main() {
     
-      // create reusable transporter object using the default SMTP transport
       let transporter = nodemailer.createTransport({
         host: "empathystaffing.net",
         port: 465,
@@ -69,17 +53,18 @@ io.on('connection', socket => {
         text: "This is a test email from the server!", // plain text body
       });
     
-      socket.emit('mail_sent', "Message sent: %s", info.messageId);
+      socket.emit('mail_res', {mailId: info.messageId, success: true});
+      
       // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
     
       // Preview only available when sending through an Ethereal account
-      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+      //console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
       // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
     }
     
-    main().catch(console.error);
+    main().catch().then(() => {
+      socket.emit('mail_res', {err: console.error})
+    });
   })
-}).use((socket, next) => {
-
 })
 
