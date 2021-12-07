@@ -51,9 +51,12 @@ io.on('connection', socket => {
         to: `${data.email}`, // list of receivers
         subject: `Greetings, ${data.name}!`, // Subject line
         text: "This is a test email from the server!", // plain text body
+      },err => {
+        socket.emit('mail_res', {err: err.message});
       });
-    
-      socket.emit('mail_res', {mailId: info.messageId, success: true});
+
+      socket.emit('mail_res', {success: true})
+      
       
       // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
     
@@ -62,9 +65,7 @@ io.on('connection', socket => {
       // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
     }
     
-    main().catch().then(() => {
-      socket.emit('mail_res', {err: console.error})
-    });
+    main().catch(console.error);
   })
 })
 
