@@ -33,39 +33,29 @@ io.on('connection', socket => {
   console.log('new user');
   socket.emit('msg', 'sockey')
   socket.on('contact_added', data => {
-  async function main() {
-    
-      let transporter = nodemailer.createTransport({
-        host: "empathystaffing.net",
-        port: 465,
-        secure: true, // true for 465, false for other ports
-        auth: {
-          user: 'info@empathystaffing.net', // generated ethereal user
-          pass: 'Money2021!', // generated ethereal password
-        },
-      });
-    
-      // send mail with defined transport object
-      let info = await transporter.sendMail({
-        from: '"Empathy Staffing" <info@empathystaffing.net>', // sender address
-        to: `${data.email}`, // list of receivers
-        subject: `Greetings, ${data.name}!`, // Subject line
-        text: "This is a test email from the server!", // plain text body
-      },err => {
+    let transporter = nodemailer.createTransport({
+      host: "empathystaffing.net",
+      port: 465,
+      secure: true, 
+      auth: {
+        user: 'info@empathystaffing.net', 
+        pass: 'Money2021!', 
+      },
+    });
+  
+    transporter.sendMail({
+      from: '"Empathy Staffing" <info@empathystaffing.net>', // sender address
+      to: `${data.email}`, // list of receivers
+      subject: `Greetings, ${data.name}!`, // Subject line
+      text: "This is a test email from the server!", // plain text body
+      
+    }, err => {
+      if(err)
         socket.emit('mail_res', {err: err.message});
-      });
+      else
+        socket.emit('mail_res', {success: true});
+    });
 
-      socket.emit('mail_res', {success: true})
-      
-      
-      // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-    
-      // Preview only available when sending through an Ethereal account
-      //console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-      // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-    }
-    
-    main().catch(console.error);
   })
 })
 
