@@ -33,29 +33,30 @@ io.on('connection', socket => {
   console.log('new user');
   socket.emit('msg', 'sockey')
   socket.on('contact_added', data => {
-    let transporter = nodemailer.createTransport({
-      host: "empathystaffing.net",
-      port: 465,
-      secure: true, 
-      auth: {
-        user: 'info@empathystaffing.net', 
-        pass: 'Money2021!', 
-      },
-    });
-  
-    transporter.sendMail({
-      from: '"Empathy Staffing" <info@empathystaffing.net>', // sender address
-      to: `${data.email}`, // list of receivers
-      subject: `Greetings, ${data.name}!`, // Subject line
-      text: "This is a test email from the server!", // plain text body
-      
-    }, err => {
-      if(err)
-        socket.emit('mail_res', {err: err.message});
-      else
-        socket.emit('mail_res', {success: true});
-    });
-
+    async function mail() {
+      let transporter = nodemailer.createTransport({
+        host: "empathystaffing.net",
+        port: 465,
+        secure: true, 
+        auth: {
+          user: 'info@empathystaffing.net', 
+          pass: 'Money2021!', 
+        },
+      });
+    
+      await transporter.sendMail({
+        from: '"Empathy Staffing" <info@empathystaffing.net>', // sender address
+        to: `${data.email}`, // list of receivers
+        subject: `Greetings, ${data.name}!`, // Subject line
+        text: "This is a test email from the server!", // plain text body
+      }, err => {
+        if(err)
+          socket.emit('mail_res', {err: err.message});
+        else
+          socket.emit('mail_res', {success: true});
+      });
+    }
+    mail()
   })
 })
 
