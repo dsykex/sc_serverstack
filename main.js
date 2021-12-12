@@ -14,7 +14,9 @@ const app = express();
 
 var opts = {
   key: fs.readFileSync('./file.pem'),
-  cert: fs.readFileSync('./file.crt')
+  cert: fs.readFileSync('./file.crt'),
+  requestCert: false,
+  rejectUnauthorized: false,
 }
 
 const server = createServer(opts, app);
