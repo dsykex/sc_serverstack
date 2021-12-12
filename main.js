@@ -1,6 +1,6 @@
 "use strict";
 const fs = require('fs');
-const { createServer } = require("http");
+const { createServer } = require("https");
 const express = require('express');
 const cors = require('cors');
 let socketIo = require('socket.io');
@@ -17,7 +17,7 @@ var opts = {
   cert: fs.readFileSync('./file.crt')
 }
 
-const server = createServer(app);
+const server = createServer(options, app);
 const io = socketIo(server, {
   cors: {
       origin: '*',
