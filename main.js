@@ -45,10 +45,10 @@ io.on('connection', socket => {
       });
     
       await transporter.sendMail({
-        from: '"Empathy Staffing" <info@empathystaffing.net>', // sender address
-        to: `${data.email}`, // list of receivers
-        subject: `Greetings, ${data.name}!`, // Subject line
-        text: "This is a test email from the server!", // plain text body
+        from: `"Empathy Staffing" <${data.settings.admin_email}>`, // sender address
+        to: `${data.contactInfo.email}`, // list of receivers
+        subject: `Greetings, ${data.contactInfo.name}!`, // Subject line
+        text: data.settings.greeting_msg, // plain text body
       }, err => {
         if(err)
           socket.emit('mail_res', {err: err.message});
