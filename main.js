@@ -17,7 +17,7 @@ var opts = {
   cert: fs.readFileSync('./file.crt')
 }
 
-const server = createServer(options, app);
+const server = createServer(opts, app);
 const io = socketIo(server, {
   cors: {
       origin: '*',
