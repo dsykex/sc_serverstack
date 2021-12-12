@@ -19,7 +19,7 @@ var opts = {
   rejectUnauthorized: false,
 }
 
-const server = createServer(app);
+const server = createServer(opts, app);
 const io = socketIo(server, {
   cors: {
       origin: '*',
