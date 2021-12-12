@@ -1,6 +1,6 @@
 "use strict";
 const fs = require('fs');
-const { createServer } = require("https");
+const { createServer } = require("http");
 const express = require('express');
 const cors = require('cors');
 let socketIo = require('socket.io');
@@ -19,7 +19,7 @@ var opts = {
   rejectUnauthorized: false,
 }
 
-const server = createServer(opts, app);
+const server = createServer(app);
 const io = socketIo(server, {
   cors: {
       origin: '*',
