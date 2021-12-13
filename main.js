@@ -1,6 +1,6 @@
 "use strict";
 const fs = require('fs');
-const { createServer } = require("http");
+const { createServer } = require("https");
 const express = require('express');
 const cors = require('cors');
 let socketIo = require('socket.io');
@@ -13,8 +13,8 @@ const PORT_NUMBER = process.env.PORT || 3000;
 const app = express();
 
 var opts = {
-  //key: fs.readFileSync('./file.pem'),
-  //cert: fs.readFileSync('./file.crt'),
+  key: fs.readFileSync('./file.pem'),
+  cert: fs.readFileSync('./file.crt'),
   requestCert: false,
   rejectUnauthorized: false,
 }
