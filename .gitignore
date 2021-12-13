@@ -2,3 +2,5 @@
 /file.crt
 /file.pem
 /csr.pem
+/server.cert
+/server.key
