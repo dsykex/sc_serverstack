@@ -13,10 +13,8 @@ const PORT_NUMBER = process.env.PORT || 3000;
 const app = express();
 
 var opts = {
-  key: fs.readFileSync('./file.pem'),
-  cert: fs.readFileSync('./file.crt'),
-  requestCert: false,
-  rejectUnauthorized: false,
+  key: fs.readFileSync('./server.key'),
+  cert: fs.readFileSync('./server.cert'),
 }
 
 const server = createServer(opts, app);
