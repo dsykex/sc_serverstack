@@ -1,6 +1,6 @@
 "use strict";
 const fs = require('fs');
-const { createServer } = require("http");
+const { createServer } = require("https");
 const express = require('express');
 const cors = require('cors');
 let socketIo = require('socket.io');
@@ -13,11 +13,11 @@ const PORT_NUMBER = process.env.PORT || 3000;
 const app = express();
 
 var opts = {
-  key: fs.readFileSync('./server.key'),
-  cert: fs.readFileSync('./server.cert'),
+  key: fs.readFileSync('/etc/letsencrypt/live/www.sykescreatives.com/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/www.sykescreatives.com/fullchain.pem'),
 }
 
-const server = createServer(app);
+const server = createServer(opts, app);
 const io = socketIo(server, {
   cors: {
       origin: '*',
