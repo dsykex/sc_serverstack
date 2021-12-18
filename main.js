@@ -8,7 +8,7 @@ let socketIo = require('socket.io');
 const nodemailer = require("nodemailer");
 const { info } = require("console");
 
-const PORT_NUMBER = process.env.PORT || 3000;
+const PORT_NUMBER = 5000;
 
 const app = express();
 
@@ -18,6 +18,7 @@ var opts = {
 }
 
 const server = createServer(opts, app);
+
 const io = socketIo(server, {
   cors: {
       origin: '*',
@@ -30,9 +31,10 @@ app
   .use(cors({origin: '*'}))
   .use((req, res, next) => {
     req.io = io;
-    next();
+    return next();
   })
-  .use('/api', require('./routes/apitest'))
+  .use('/api', require('./routes/apitest'));
+  
 
 server.listen(PORT_NUMBER, () => { console.log(`Server started on port ${PORT_NUMBER}`) })
 
